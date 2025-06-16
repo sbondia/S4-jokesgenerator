@@ -11,25 +11,25 @@
             <h1>RANDOM JOKES GENERATOR</h1>
         </div>
     </header>
-    <section>
+    <form>
         <div>
             <div>
                 <input type="radio" id="dadJ" name="jokeInput" value="dadJ">
-                <label for="age1">Dad Jokes</label>
+                <label for="dadJ">Dad Jokes</label>
             </div>
             <div>
                 <input type="radio" id="chuckJ" name="jokeInput" value="chuckJ">
-                <label for="age2">Chuck Norris</label>
+                <label for="chuckJ">Chuck Norris</label>
             </div>
             <div>
                 <input type="radio" id="bothJ" name="jokeInput" value="bothJ">
-                <label for="age3">Both</label>
+                <label for="bothJ">Both</label>
             </div>
         </div>
         <div>
-            <button type="button">new joke</button>
+            <button type="submit" id="btn_newJoke">new joke</button>
         </div>
-    </section>
+    </form>
     <section>
         <div>
             <p>joke placeholder</p>
@@ -48,5 +48,9 @@
             <p>weathercast info placeholder</p>
         </div>
     </footer>
+    <!-- temp -->
+     <script src="src/scripts/api.js"></script>
+     <script src="src/scripts/main.js"></script>
+     <script src="src/scripts/events.js"></script>
 </body>
 </html>
