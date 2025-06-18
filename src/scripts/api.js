@@ -10,12 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 const API_DADJOKES_HEADER = { headers: { 'Accept': 'application/json' } };
 const API_DADJOKES_URL = "https://icanhazdadjoke.com/";
-function fetchAPIpre(url, header) {
-    //fetch(url, header).then(response=> response.json()).then(x=> console.log("+fetch",x))
-    const response = fetch(url, header).then(x => console.log(x));
-    //console.log(response.json())
-    return "w";
-}
+const API_CHUCKJOKES_URL = "https://api.chucknorris.io/jokes/random";
 function fetchAPI(url, header) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -23,12 +18,11 @@ function fetchAPI(url, header) {
             if (!response.ok) {
                 throw new Error("Error HTTP: " + response.status);
             }
-            const apiData = yield response.json();
-            console.log(apiData);
-            return apiData;
+            return yield response.json();
         }
         catch (error) {
-            return { er: error.message };
+            console.warn(error);
+            return error.message;
         }
     });
 }
