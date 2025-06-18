@@ -5,7 +5,7 @@ function randomSource() {
 }
 const jokeHistory = [];
 function getJoke() {
-    let typeJoke = document.querySelector('input[type="radio"][name="jokeInput"]:checked');
+    const typeJoke = document.querySelector('input[type="radio"][name="jokeInput"]:checked');
     let apiSource = jokeSource.includes(typeJoke.value) ? typeJoke.value : randomSource();
     switch (apiSource) {
         case "dadJ":
@@ -17,6 +17,7 @@ function getJoke() {
                 };
                 jokeHistory.push(jokeAux);
             });
+            console.log(1, apiSource, jokeHistory.length, jokeHistory);
             break;
         case "chuckJ":
             fetchAPI(API_CHUCKJOKES_URL).then(apiData => {
@@ -27,6 +28,14 @@ function getJoke() {
                 };
                 jokeHistory.push(jokeAux);
             });
+            console.log(2, apiSource, jokeHistory.length, jokeHistory);
+            break;
     }
-    console.log(apiSource, jokeHistory);
+    console.log(3, apiSource, jokeHistory.length, jokeHistory);
+    printJoke(jokeHistory[jokeHistory.length - 1]);
+}
+function printJoke(joke) {
+    const jokeOutput = document.querySelector('#jokeOutput');
+    //console.log(jokeOutput)
+    jokeOutput.innerHTML = joke.text;
 }
