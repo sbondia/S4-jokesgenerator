@@ -19,33 +19,29 @@ function getJoke(){
         case "dadJ":
             fetchAPI(API_DADJOKES_URL, API_DADJOKES_HEADER).then(apiData=>{
                 const jokeAux:jokeObj = {
-                    id: apiData.id,
+                    id: parseInt(apiData.id),
                     text: apiData.joke,
                     score: 0
                 }
                 jokeHistory.push(jokeAux)
+                printJoke(jokeHistory[jokeHistory.length-1])
             })
-                console.log(1, apiSource, jokeHistory.length, jokeHistory)
             break;
         case "chuckJ":
             fetchAPI(API_CHUCKJOKES_URL).then(apiData=>{
                 const jokeAux:jokeObj = {
-                    id: apiData.id,
+                    id: parseInt(apiData.id),
                     text: apiData.value,
                     score: 0
                 }
                 jokeHistory.push(jokeAux)
+                printJoke(jokeHistory[jokeHistory.length-1])
             })
-                console.log(2, apiSource, jokeHistory.length, jokeHistory)
             break;
     }
-    console.log(3, apiSource, jokeHistory.length, jokeHistory)
-
-    printJoke(jokeHistory[jokeHistory.length-1])
 }
 
 function printJoke(joke:jokeObj){
     const jokeOutput:any = document.querySelector('#jokeOutput');
-    //console.log(jokeOutput)
     jokeOutput.innerHTML = joke.text;
 }
