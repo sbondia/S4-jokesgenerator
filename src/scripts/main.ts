@@ -83,7 +83,7 @@ function getScore(){
     }
 }
 
-function getWeather(){
+async function getWeather(){
     const currentWeather:WeatherData = {
         time: {
             date: '',
@@ -92,14 +92,7 @@ function getWeather(){
         temperature: '',
         apparent_temperature: ''
     }
-    const currentLocation:LocationData = getLocation()
-    /*
-    const currentLocation:LocationData = {
-        latitude: 41.45,
-        longitude: 2.16,
-        altitude: 300
-    }
-    */
+    const currentLocation:any = await getLocation()
     let weatherApiPara:string = `latitude=${currentLocation.latitude}&longitude=${currentLocation.longitude}`
     if(currentLocation.altitude) {weatherApiPara += `&elevation=${currentLocation.altitude}`}
     weatherApiPara += API_WEATHER_EXTRAPARA
@@ -115,21 +108,23 @@ function getWeather(){
     })
 }
 
-function getLocation(){
-    const locationAux:LocationData = {
-        latitude: 0,
-        longitude: 0,
-        altitude: 0
-    }
-    navigator.geolocation.getCurrentPosition(
-        (position)=>{
-            locationAux.latitude = position.coords.latitude;
-            locationAux.longitude = position.coords.longitude;
-            locationAux.altitude = position.coords.altitude;
-        },
-        (error)=>{console.log(error)}
-    )
-    return locationAux
+async function getLocation(){
+    return new Promise ((res, rej)=>{
+        const currentLocation:LocationData = {
+            latitude: 0,
+            longitude: 0,
+            altitude: 0
+        }
+        navigator.geolocation.getCurrentPosition(
+            (position)=>{   
+                currentLocation.latitude = position.coords.latitude
+                currentLocation.longitude = position.coords.longitude
+                if(position.coords.altitude) {currentLocation.altitude = position.coords.altitude}
+                res(currentLocation)
+            },
+            (error)=> {rej(error)}
+        )
+    })
 }
 
 function printWeather(currentWeather:WeatherData){

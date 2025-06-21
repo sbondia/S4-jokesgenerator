@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 const jokeSource = ["dadJ", "chuckJ"];
 function randomSource() {
     return jokeSource[Math.floor(Math.random() * jokeSource.length)];
@@ -54,50 +63,51 @@ function getScore() {
     }
 }
 function getWeather() {
-    const currentWeather = {
-        time: {
-            date: '',
-            hour: ''
-        },
-        temperature: '',
-        apparent_temperature: ''
-    };
-    const currentLocation = getLocation();
-    /*
-    const currentLocation:LocationData = {
-        latitude: 41.45,
-        longitude: 2.16,
-        altitude: 300
-    }
-    */
-    let weatherApiPara = `latitude=${currentLocation.latitude}&longitude=${currentLocation.longitude}`;
-    if (currentLocation.altitude) {
-        weatherApiPara += `&elevation=${currentLocation.altitude}`;
-    }
-    weatherApiPara += API_WEATHER_EXTRAPARA;
-    fetchAPI(API_WEATHER_URL + weatherApiPara).then(apiData => {
-        console.log(apiData);
-        currentWeather.time = getCurrentTime();
-        let apiDataIndex = apiData.hourly.time.findIndex((apiHourlyData) => {
-            return apiHourlyData.split('T')[1].split(':')[0] == currentWeather.time.hour.split(':')[0];
+    return __awaiter(this, void 0, void 0, function* () {
+        const currentWeather = {
+            time: {
+                date: '',
+                hour: ''
+            },
+            temperature: '',
+            apparent_temperature: ''
+        };
+        const currentLocation = yield getLocation();
+        let weatherApiPara = `latitude=${currentLocation.latitude}&longitude=${currentLocation.longitude}`;
+        if (currentLocation.altitude) {
+            weatherApiPara += `&elevation=${currentLocation.altitude}`;
+        }
+        weatherApiPara += API_WEATHER_EXTRAPARA;
+        fetchAPI(API_WEATHER_URL + weatherApiPara).then(apiData => {
+            console.log(apiData);
+            currentWeather.time = getCurrentTime();
+            let apiDataIndex = apiData.hourly.time.findIndex((apiHourlyData) => {
+                return apiHourlyData.split('T')[1].split(':')[0] == currentWeather.time.hour.split(':')[0];
+            });
+            currentWeather.temperature = apiData.hourly.temperature_2m[apiDataIndex] + apiData.hourly_units.temperature_2m;
+            currentWeather.apparent_temperature = apiData.hourly.apparent_temperature[apiDataIndex] + apiData.hourly_units.apparent_temperature;
+            printWeather(currentWeather);
         });
-        currentWeather.temperature = apiData.hourly.temperature_2m[apiDataIndex] + apiData.hourly_units.temperature_2m;
-        currentWeather.apparent_temperature = apiData.hourly.apparent_temperature[apiDataIndex] + apiData.hourly_units.apparent_temperature;
-        printWeather(currentWeather);
     });
 }
 function getLocation() {
-    const locationAux = {
-        latitude: 0,
-        longitude: 0,
-        altitude: 0
-    };
-    navigator.geolocation.getCurrentPosition((position) => {
-        locationAux.latitude = position.coords.latitude;
-        locationAux.longitude = position.coords.longitude;
-        locationAux.altitude = position.coords.altitude;
-    }, (error) => { console.log(error); });
-    return locationAux;
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise((res, rej) => {
+            const currentLocation = {
+                latitude: 0,
+                longitude: 0,
+                altitude: 0
+            };
+            navigator.geolocation.getCurrentPosition((position) => {
+                currentLocation.latitude = position.coords.latitude;
+                currentLocation.longitude = position.coords.longitude;
+                if (position.coords.altitude) {
+                    currentLocation.altitude = position.coords.altitude;
+                }
+                res(currentLocation);
+            }, (error) => { rej(error); });
+        });
+    });
 }
 function printWeather(currentWeather) {
     const weatherOutput = document.querySelector('#weatherOutput');
