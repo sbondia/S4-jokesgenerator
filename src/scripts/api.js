@@ -13,6 +13,7 @@ const API_DADJOKES_URL = "https://icanhazdadjoke.com/";
 const API_CHUCKJOKES_URL = "https://api.chucknorris.io/jokes/random";
 const API_WEATHER_URL = "https://api.open-meteo.com/v1/forecast?";
 const API_WEATHER_EXTRAPARA = "&hourly=temperature_2m&hourly=apparent_temperature";
+const API_CLOCK_TIMEZONE = 2;
 function fetchAPI(url, header) {
     return __awaiter(this, void 0, void 0, function* () {
         try {

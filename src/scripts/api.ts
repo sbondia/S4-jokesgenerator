@@ -3,6 +3,7 @@ const API_DADJOKES_URL:string = "https://icanhazdadjoke.com/"
 const API_CHUCKJOKES_URL:string = "https://api.chucknorris.io/jokes/random"
 const API_WEATHER_URL:string = "https://api.open-meteo.com/v1/forecast?"
 const API_WEATHER_EXTRAPARA:string = "&hourly=temperature_2m&hourly=apparent_temperature"
+const API_TIMEZONE:number = 2
 
 async function fetchAPI(url:string, header?:object){
     try{

@@ -102,8 +102,8 @@ async function getWeather(){
         let apiDataIndex:number = apiData.hourly.time.findIndex((apiHourlyData:any)=>{
             return apiHourlyData.split('T')[1].split(':')[0] == currentWeather.time.hour.split(':')[0]
         })
-        currentWeather.temperature = apiData.hourly.temperature_2m[apiDataIndex]+apiData.hourly_units.temperature_2m
-        currentWeather.apparent_temperature = apiData.hourly.apparent_temperature[apiDataIndex]+apiData.hourly_units.apparent_temperature
+        currentWeather.temperature = apiData.hourly.temperature_2m[apiDataIndex] + apiData.hourly_units.temperature_2m
+        currentWeather.apparent_temperature = apiData.hourly.apparent_temperature[apiDataIndex] + apiData.hourly_units.apparent_temperature
         printWeather(currentWeather);
     })
 }
@@ -138,8 +138,9 @@ function getCurrentTime(){
         hour: ''
     }
     let currentTimeData = new Date().toISOString()
+    let auxHour:string = currentTimeData.split('T')[1].split('.')[0]
+    currentTime.hour = `${parseInt(auxHour.split(':')[0])+API_TIMEZONE}:${auxHour.split(':')[1]}:${auxHour.split(':')[2]}`
     currentTime.date = currentTimeData.split('T')[0]
-    currentTime.hour = currentTimeData.split('T')[1].split('.')[0]
     console.log(currentTime)
     return currentTime
 }

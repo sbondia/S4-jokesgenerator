@@ -119,8 +119,9 @@ function getCurrentTime() {
         hour: ''
     };
     let currentTimeData = new Date().toISOString();
+    let auxHour = currentTimeData.split('T')[1].split('.')[0];
+    currentTime.hour = `${parseInt(auxHour.split(':')[0]) + API_CLOCK_TIMEZONE}:${auxHour.split(':')[1]}:${auxHour.split(':')[2]}`;
     currentTime.date = currentTimeData.split('T')[0];
-    currentTime.hour = currentTimeData.split('T')[1].split('.')[0];
     console.log(currentTime);
     return currentTime;
 }
