@@ -97,7 +97,6 @@ async function getWeather(){
     if(currentLocation.altitude) {weatherApiPara += `&elevation=${currentLocation.altitude}`}
     weatherApiPara += API_WEATHER_EXTRAPARA
     fetchAPI(API_WEATHER_URL+weatherApiPara).then(apiData=>{
-        console.log(apiData)
         currentWeather.time = getCurrentTime()
         let apiDataIndex:number = apiData.hourly.time.findIndex((apiHourlyData:any)=>{
             return apiHourlyData.split('T')[1].split(':')[0] == currentWeather.time.hour.split(':')[0]
@@ -141,6 +140,5 @@ function getCurrentTime(){
     let auxHour:string = currentTimeData.split('T')[1].split('.')[0]
     currentTime.hour = `${parseInt(auxHour.split(':')[0])+API_TIMEZONE}:${auxHour.split(':')[1]}:${auxHour.split(':')[2]}`
     currentTime.date = currentTimeData.split('T')[0]
-    console.log(currentTime)
     return currentTime
 }
