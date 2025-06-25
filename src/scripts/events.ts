@@ -2,6 +2,7 @@ import { getWeather, getScore, getJoke } from "./main.js";
 import { jokeHistory } from "../fake_db.js";
 
 getWeather()
+getJoke()
 
 const btn_newJoke = document.querySelector("#btn_newJoke") as HTMLButtonElement
 btn_newJoke!.addEventListener("click", (click) => {

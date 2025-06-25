@@ -7,5 +7,5 @@ export function printJoke(joke:JokeData){
 
 export function printWeather(currentWeather:WeatherData){
     const weatherOutput:any = document.querySelector('#weatherOutput');
-    weatherOutput.innerHTML = JSON.stringify(currentWeather);
+    weatherOutput.innerHTML = `${currentWeather.time.hour} | ${currentWeather.temperature} - ${currentWeather.apparent_temperature}`
 }
