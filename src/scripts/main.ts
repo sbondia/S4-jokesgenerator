@@ -1,39 +1,10 @@
-const jokeSource = ["dadJ", "chuckJ"] as const
-type JokeSelector = typeof jokeSource[number]
+import { fetchAPI, getCurrentTime, getLocation } from "./api.js"; 
+import { printJoke, printWeather } from "./domOutput.js";
+import { jokeHistory, jokeSource } from "../fake_db.js";
+import * as API from "../config/api_parameters.js";
+import { JokeData, JokeSelector, WeatherData, } from "../config/interfaces.js";
 
-function randomSource():JokeSelector{
-    return jokeSource[Math.floor(Math.random()*jokeSource.length)]
-}
-
-interface JokeData {
-    id:string
-    text:string
-    score:{
-        value: number
-        time: TimeData
-    }
-}
-
-interface LocationData {
-    latitude:number
-    longitude:number
-    altitude:number|null
-}
-
-interface WeatherData {
-    time:TimeData
-    temperature:string
-    apparent_temperature:string
-}
-
-interface TimeData {
-    date:string
-    hour:string
-}
-
-const jokeHistory:JokeData[] = []
-
-function getJoke(){
+export function getJoke(){
     const jokeAux:JokeData = {
         id: '',
         text: '',
@@ -50,7 +21,7 @@ function getJoke(){
     if(typeJoke!=null) {apiSource = jokeSource.includes(typeJoke.value) ? typeJoke.value : randomSource();}
     switch(apiSource){
         case "dadJ":
-            fetchAPI(API_DADJOKES_URL, API_DADJOKES_HEADER).then(apiData=>{
+            fetchAPI(API.DADJOKES_URL, API.DADJOKES_HEADER).then(apiData=>{
                 jokeAux.id = apiData.id;
                 jokeAux.text = apiData.joke;
                 jokeHistory.push(jokeAux);
@@ -58,7 +29,7 @@ function getJoke(){
             })
             break;
         case "chuckJ":
-            fetchAPI(API_CHUCKJOKES_URL).then(apiData=>{
+            fetchAPI(API.CHUCKJOKES_URL).then(apiData=>{
                 jokeAux.id = apiData.id;
                 jokeAux.text = apiData.value;
                 jokeHistory.push(jokeAux);
@@ -68,12 +39,11 @@ function getJoke(){
     }
 }
 
-function printJoke(joke:JokeData){
-    const jokeOutput:any = document.querySelector('#jokeOutput');
-    jokeOutput.innerHTML = joke.text;
+function randomSource():JokeSelector{
+    return jokeSource[Math.floor(Math.random()*jokeSource.length)]
 }
 
-function getScore(){
+export function getScore(){
     const scoreLastJoke = document.querySelector<HTMLInputElement>('input[type="radio"][name="scoreInput"]:checked');
     if(scoreLastJoke!=null){
         jokeHistory[jokeHistory.length-1].score.value = parseInt(scoreLastJoke.value)
@@ -83,7 +53,7 @@ function getScore(){
     }
 }
 
-async function getWeather(){
+export async function getWeather(){
     const currentWeather:WeatherData = {
         time: {
             date: '',
@@ -95,8 +65,8 @@ async function getWeather(){
     const currentLocation:any = await getLocation()
     let weatherApiPara:string = `latitude=${currentLocation.latitude}&longitude=${currentLocation.longitude}`
     if(currentLocation.altitude) {weatherApiPara += `&elevation=${currentLocation.altitude}`}
-    weatherApiPara += API_WEATHER_EXTRAPARA
-    fetchAPI(API_WEATHER_URL+weatherApiPara).then(apiData=>{
+    weatherApiPara += API.WEATHER_EXTRAPARA
+    fetchAPI(API.WEATHER_URL+weatherApiPara).then(apiData=>{
         currentWeather.time = getCurrentTime()
         let apiDataIndex:number = apiData.hourly.time.findIndex((apiHourlyData:any)=>{
             return apiHourlyData.split('T')[1].split(':')[0] == currentWeather.time.hour.split(':')[0]
@@ -105,40 +75,4 @@ async function getWeather(){
         currentWeather.apparent_temperature = apiData.hourly.apparent_temperature[apiDataIndex] + apiData.hourly_units.apparent_temperature
         printWeather(currentWeather);
     })
-}
-
-async function getLocation(){
-    return new Promise ((res, rej)=>{
-        const currentLocation:LocationData = {
-            latitude: 0,
-            longitude: 0,
-            altitude: 0
-        }
-        navigator.geolocation.getCurrentPosition(
-            (position)=>{   
-                currentLocation.latitude = position.coords.latitude
-                currentLocation.longitude = position.coords.longitude
-                if(position.coords.altitude) {currentLocation.altitude = position.coords.altitude}
-                res(currentLocation)
-            },
-            (error)=> {rej(error)}
-        )
-    })
-}
-
-function printWeather(currentWeather:WeatherData){
-    const weatherOutput:any = document.querySelector('#weatherOutput');
-    weatherOutput.innerHTML = JSON.stringify(currentWeather);
-}
-
-function getCurrentTime(){
-    const currentTime:TimeData = {
-        date: '',
-        hour: ''
-    }
-    let currentTimeData = new Date().toISOString()
-    let auxHour:string = currentTimeData.split('T')[1].split('.')[0]
-    currentTime.hour = `${parseInt(auxHour.split(':')[0])+API_TIMEZONE}:${auxHour.split(':')[1]}:${auxHour.split(':')[2]}`
-    currentTime.date = currentTimeData.split('T')[0]
-    return currentTime
 }
