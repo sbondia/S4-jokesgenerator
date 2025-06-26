@@ -4,49 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dad Jokes Generator</title>
+    <link rel="stylesheet" type="text/css"  href="src/styles/style.css">
 </head>
 <body>
     <header>
         <div>
-            <h1>RANDOM JOKES GENERATOR</h1>
+            <img src="src/img/JF_logo.png" alt="JF_logo">
         </div>
     </header>
-    <section>
-        <div>
-            <div>
-                <input type="radio" id="dadJ" name="jokeInput" value="dadJ">
-                <label for="age1">Dad Jokes</label>
+    <div id="boxMain">
+        <form class="auxBox">
+            <div class="but3">
+                <div>
+                    <input type="radio" id="dadJ" name="jokeInput" value="dadJ">
+                    <label for="dadJ">Dad Jokes</label>
+                </div>
+                <div>
+                    <input type="radio" id="chuckJ" name="jokeInput" value="chuckJ">
+                    <label for="chuckJ">Chuck Norris</label>
+                </div>
+                <div>
+                    <input type="radio" id="randomJ" name="jokeInput" value="randomJ">
+                    <label for="randomJ">Random</label>
+                </div>
             </div>
             <div>
-                <input type="radio" id="chuckJ" name="jokeInput" value="chuckJ">
-                <label for="age2">Chuck Norris</label>
+                <button type="submit" id="btn_newJoke">new joke</button>
             </div>
-            <div>
-                <input type="radio" id="bothJ" name="jokeInput" value="bothJ">
-                <label for="age3">Both</label>
+        </form>
+        <section class="auxBox">
+            <div id="jokeOutput">
+                <p>joke placeholder</p>
             </div>
-        </div>
-        <div>
-            <button type="button">new joke</button>
-        </div>
-    </section>
-    <section>
-        <div>
-            <p>joke placeholder</p>
-        </div>
-        <div>
-            <button type="button">1</button>
-            <button type="button">2</button>
-            <button type="button">3</button>
-        </div>
-    </section>
+            <div class="but3">
+                <div>
+                    <input type="radio" id="score1" name="scoreInput" value="1">
+                    <label for="dadJ">1</label>
+                </div>
+                <div>
+                    <input type="radio" id="score2" name="scoreInput" value="2">
+                    <label for="chuckJ">2</label>
+                </div>
+                <div>
+                    <input type="radio" id="score3" name="scoreInput" value="3">
+                    <label for="randomJ">3</label>
+                </div>
+            </div>
+        </section>
+    </div>
     <footer>
         <div>
-            <a href="https://github.com/sbondia/S4-jokesgenerator.git">GitHub Page</a>
+            <a class="whiteText" href="https://github.com/sbondia/S4-jokesgenerator.git">GitHub Page</a>
         </div>
-        <div>
+        <div id="weatherOutput" class="whiteText">
             <p>weathercast info placeholder</p>
         </div>
     </footer>
+    <!-- temp -->
+    <script type="module" src="./dist/scripts/events.js"></script>
 </body>
 </html>
